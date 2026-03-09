@@ -1,82 +1,51 @@
-﻿using System;
+using System;
 using System.Text;
 
-class Program
+public static class Tasks
 {
-    static void Main()
+    public static double GetRadius(double s)
     {
-        Console.OutputEncoding = Encoding.UTF8;
+        if (s < 0) throw new ArgumentException("Площа не може бути від'ємною");
+        return Math.Sqrt(s / Math.PI);
+    }
 
-        while (true)
-        {
-            Console.WriteLine("\n--- Виберіть номер завдання (1-6) або 0 для виходу ---");
-            string choice = Console.ReadLine();
+    public static int CompareDigits(int n)
+    {
+        int absN = Math.Abs(n);
+        if (absN < 100 || absN > 999) throw new ArgumentException("Число має бути тризначним");
+        int d1 = absN / 100;
+        int d2 = (absN / 10) % 10;
+        if (d1 > d2) return 1;
+        if (d2 > d1) return 2;
+        return 0;
+    }
 
-            if (choice == "0") break;
+    public static string CheckPoint(double x, double y)
+    {
+        if (x > -23 && y < 0 && y > x) return "Так";
+        if ((x >= -23 && y <= 0 && y >= x) && (x == -23 || y == 0 || y == x)) return "На межі";
+        return "Ні";
+    }
 
-            switch (choice)
-            {
-                case "1":
-                    Console.Write("Введіть площу круга (s): ");
-                    if (double.TryParse(Console.ReadLine(), out double s) && s >= 0)
-                    {
-                        double r = Math.Sqrt(s / Math.PI);
-                        Console.WriteLine($"Радіус: {r:F4}");
-                    }
-                    break;
+    public static string GetChineseZodiac(int year)
+    {
+        if (year <= 0) throw new ArgumentException("Рік має бути додатним");
+        string[] animals = { "Мавпи", "Півня", "Собаки", "Свині", "Щура", "Бика", "Тигра", "Кролика", "Дракона", "Змії", "Коня", "Кози" };
+        return animals[year % 12];
+    }
 
-                case "2":
-                    Console.Write("Введіть тризначне число: ");
-                    if (int.TryParse(Console.ReadLine(), out int n2))
-                    {
-                        int absN = Math.Abs(n2);
-                        if (absN >= 100 && absN <= 999)
-                        {
-                            int d1 = absN / 100;
-                            int d2 = (absN / 10) % 10;
-                            if (d1 > d2) Console.WriteLine("Перша цифра більша");
-                            else if (d2 > d1) Console.WriteLine("Друга цифра більша");
-                            else Console.WriteLine("Цифри однакові");
-                        }
-                    }
-                    break;
+    public static double SquareOfDifference(double a, double b)
+    {
+        return Math.Pow(a - b, 2);
+    }
 
-                case "3":
-                    Console.Write("x: "); double x = double.Parse(Console.ReadLine());
-                    Console.Write("y: "); double y = double.Parse(Console.ReadLine());
-                    if (x > -23 && y < 0 && y > x) Console.WriteLine("Так");
-                    else if ((x >= -23 && y <= 0 && y >= x) && (x == -23 || y == 0 || y == x)) Console.WriteLine("На межі");
-                    else Console.WriteLine("Ні");
-                    break;
+    public static double CalculateExpression(double a, double b)
+    {
+        double den1 = a * a + a * b + 1;
+        double den2 = b * b + a * b + 1;
+        if (Math.Abs(den1) < 1e-9 || Math.Abs(den2) < 1e-9)
+            throw new DivideByZeroException("Ділення на нуль");
 
-                case "4":
-                    Console.Write("Рік: ");
-                    if (int.TryParse(Console.ReadLine(), out int yr) && yr > 0)
-                    {
-                        string[] animals = { "Мавпи", "Півня", "Собаки", "Свині", "Щура", "Бика", "Тигра", "Кролика", "Дракона", "Змії", "Коня", "Кози" };
-                        Console.WriteLine($"Рік {animals[yr % 12]}");
-                    }
-                    break;
-
-                case "5":
-                    Console.Write("a: "); double a5 = double.Parse(Console.ReadLine());
-                    Console.Write("b: "); double b5 = double.Parse(Console.ReadLine());
-                    Console.WriteLine($"Результат: {Math.Pow(a5 - b5, 2)}");
-                    break;
-
-                case "6":
-                    Console.Write("a: "); double a6 = double.Parse(Console.ReadLine());
-                    Console.Write("b: "); double b6 = double.Parse(Console.ReadLine());
-                    double den1 = a6 * a6 + a6 * b6 + 1;
-                    double den2 = b6 * b6 + a6 * b6 + 1;
-                    if (den1 != 0 && den2 != 0) Console.WriteLine($"Результат: {(1.0 / den1) - (1.0 / den2):F4}");
-                    else Console.WriteLine("Ділення на нуль!");
-                    break;
-
-                default:
-                    Console.WriteLine("Невірний вибір.");
-                    break;
-            }
-        }
+        return (1.0 / den1) - (1.0 / den2);
     }
 }
