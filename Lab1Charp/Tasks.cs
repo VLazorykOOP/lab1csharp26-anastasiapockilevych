@@ -1,50 +1,96 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-public static class Tasks
+namespace TestProject1
 {
-    public static double GetRadius(double s)
+    [TestClass]
+    public class TaskTests
     {
-        if (s < 0) throw new ArgumentException();
-        return Math.Sqrt(s / Math.PI);
-    }
+        [TestMethod] 
+        public void Task1_Positive()
+        {
+            Assert.AreEqual(5.0, Tasks.GetRadius(Math.PI * 25), 0.001);
+        }
 
-    public static int CompareDigits(int n)
-    {
-        int absN = Math.Abs(n);
-        if (absN < 100 || absN > 999) throw new ArgumentException();
-        int d1 = absN / 100;
-        int d2 = (absN / 10) % 10;
-        if (d1 > d2) return 1;
-        if (d2 > d1) return 2;
-        return 0;
-    }
+        [TestMethod]
+        public void Task1_Negative()
+        {
+            Assert.AreEqual(10.0, Tasks.GetRadius(Math.PI * 25), 0.001);
+        }
 
-    public static string CheckPoint(double x, double y)
-    {
-        if (x > -23 && y < 0 && y > x) return "Так";
-        if ((x >= -23 && y <= 0 && y >= x) && (x == -23 || y == 0 || y == x)) return "На межі";
-        return "Ні";
-    }
+        [TestMethod]
+        public void Task2_Positive()
+        {
+            Assert.AreEqual(1, Tasks.CompareDigits(425));
+        }
 
-    public static string GetChineseZodiac(int year)
-    {
-        if (year <= 0) throw new ArgumentException();
-        string[] animals = { "Мавпи", "Півня", "Собаки", "Свині", "Щура", "Бика", "Тигра", "Кролика", "Дракона", "Змії", "Коня", "Кози" };
-        return animals[year % 12];
-    }
+        [TestMethod]
+        public void Task2_Negative()
+        {
+            Assert.AreEqual(0, Tasks.CompareDigits(123));
+        }
 
-    public static double SquareOfDifference(double a, double b)
-    {
-        return Math.Pow(a - b, 2);
-    }
+        [TestMethod]
+        public void Task3_Positive()
+        {
+            Assert.AreEqual("Так", Tasks.CheckPoint(-10, -5));
+        }
 
-    public static double CalculateExpression(double a, double b)
-    {
-        double den1 = a * a + a * b + 1;
-        double den2 = b * b + a * b + 1;
-        if (Math.Abs(den1) < 1e-9 || Math.Abs(den2) < 1e-9)
-            throw new DivideByZeroException();
+        [TestMethod]
+        public void Task3_Negative()
+        {
+            Assert.AreEqual("Так", Tasks.CheckPoint(10, 10));
+        }
 
-        return (1.0 / den1) - (1.0 / den2);
+        [TestMethod]
+        public void Task4_Positive()
+        {
+            Assert.AreEqual("Дракона", Tasks.GetChineseZodiac(2024));
+        }
+
+        [TestMethod]
+        public void Task4_Negative()
+        {
+            Assert.AreEqual("Щура", Tasks.GetChineseZodiac(2024));
+        }
+
+        [TestMethod]
+        public void Task5_Positive()
+        {
+            Assert.AreEqual(4.0, Tasks.SquareOfDifference(5, 3));
+        }
+
+        [TestMethod]
+        public void Task5_Negative()
+        {
+            Assert.AreEqual(25.0, Tasks.SquareOfDifference(5, 3));
+        }
+
+        [TestMethod]
+        public void Task6_Positive()
+        {
+            double result = Tasks.CalculateExpression(1, 2);
+            Assert.AreEqual(0.1071, result, 0.0001);
+        }
+
+        [TestMethod]
+        public void Task6_Negative()
+        {
+            Assert.AreEqual(0.0, Tasks.CalculateExpression(1, 2));
+        }
+
+        [TestMethod]
+        public void Task1_Exception_Check()
+        {
+            try
+            {
+                Tasks.GetRadius(-5);
+            }
+            catch (ArgumentException)
+            {
+                return;
+            }
+            Assert.Fail();
+        }
     }
 }
